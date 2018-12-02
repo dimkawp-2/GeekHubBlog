@@ -8,12 +8,16 @@ class SessionController < ApplicationController
       redirect_to '/', alert: 'Miss email or password.'
     else
       user = User.find_by email: params[:user][:email]
-      @posts = Post.all
-      if user.email == params[:user][:email] && user.password == params[:user][:password]
-        session[:user_id] = user.id
-        redirect_to '/', notice: 'Login successfully created.'
+      if !user.blank?
+        @posts = Post.all
+        if user.email == params[:user][:email] && user.password == params[:user][:password]
+          session[:user_id] = user.id
+          redirect_to '/', notice: 'Login successfully created.'
+        else
+          redirect_to '/', alert: 'Login error.'
+        end
       else
-        redirect_to '/', alert: 'Login error.'
+        redirect_to '/', alert: 'Miss email or password.'
       end
     end
   end
