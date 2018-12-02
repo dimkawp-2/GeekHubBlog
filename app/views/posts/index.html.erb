@@ -1,0 +1,31 @@
+<div class="ui container" style="min-height: 300px">
+  <br>
+  <a href="posts/new">
+    <button class="massive ui button blue">
+      Greate Post
+    </button>
+  </a>
+
+  <table class="ui fixed table" >
+    <thead>
+    <tr><th>Title</th>
+      <th>Description</th>
+      <th>Navigation</th>
+    </tr></thead>
+    <tbody>
+    <% @self_posts.each do |post| %>
+    <tr>
+      <td><%= post.title %></td>
+      <td><%= post.body %></td>
+      <td>
+        <a href="posts/<%= post.id %>">
+          <button class="ui button green">show</button>
+        </a>
+        <%= link_to 'Destroy', post, :method => :delete, class: "ui button red", :confirm => "Are you sure?" %>
+      </td>
+    </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <br>
+</div>

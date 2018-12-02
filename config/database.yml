@@ -1,0 +1,35 @@
+# SQLite version 3.x
+#   gem install sqlite3
+#
+#   Ensure the SQLite 3 gem is defined in your Gemfile
+#   gem 'sqlite3'
+#
+default: &default
+  adapter: postgresql
+  encoding: utf8
+  reconnect: false
+  pool: 25
+  port: 5432
+  username: postgres
+  password: 1234
+  host: localhost
+
+development:
+  <<: *default
+  database: geek_hub_blog_db
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: geek_hub_blog_db
+
+production:
+  adapter: postgresql
+  encoding: utf8
+  reconnect: false
+  pool: 25
+  port: 5432
+  username: ENV['HEROKU_DB_USERNAME']
+  password: ENV['HEROKU_DB_PASSWORD']
+  host: ENV['HEROKU_DB_HOST']

@@ -1,0 +1,19 @@
+<% if logged_in? %>
+<div class="ui container">
+  <form action="/posts" method="post" class="ui form">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <div class="three column row">
+      <div class="field">
+        <label>Title</label>
+        <input type="text" name="post[title]" placeholder="Title">
+      </div>
+      <div class="field">
+        <label>Body</label>
+        <textarea type="text" name="post[body]" placeholder="Body" cols="50" rows="10"></textarea>
+      </div>
+    </div>
+    <br>
+    <button class="ui button blue" type="submit">Create</button>
+  </form>
+</div>
+<% end %>
