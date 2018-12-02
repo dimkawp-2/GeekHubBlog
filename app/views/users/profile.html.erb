@@ -1,0 +1,52 @@
+<div class="ui container">
+  <br>
+  <div class="ui grid">
+    <div class="six wide column">
+      <div class="ui card">
+        <div class="image">
+          <%=image_tag("user.png", class: "image", alt: "user")%>
+        </div>
+        <div class="content">
+          <a class="header">
+            <%= @user.name %>
+          </a>
+          <div class="meta">
+            <span class="date"><%= @user.created_at %></span>
+          </div>
+          <div class="description">
+            <%= @user.email %>
+          </div>
+        </div>
+        <div class="extra content">
+          <a>
+            <i class="user icon"></i>
+            <%= @posts.length  %>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="ten wide column">
+
+      <form class="ui form">
+        <div class="field">
+          <label>Old Name</label>
+          <input type="text" name="first-name" placeholder=<%= @user.name %>
+              </div>
+          <div class="field">
+            <label>New Name</label>
+            <input type="text" name="last-name" placeholder="New Name">
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" tabindex="0" class="hidden">
+              <label>I agree to the change name</label>
+            </div>
+          </div>
+          <button class="ui button" type="submit">Submit</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+  <br>
+</div>

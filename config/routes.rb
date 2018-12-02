@@ -5,9 +5,14 @@ Rails.application.routes.draw do
 
   # Users
   resources :users
+  get '/profile', to: 'users#profile'
   
   # Posts
   resources :posts
+
+  # Message
+  # resources :comments
+  post '/comments/:post_id', to: 'posts#create_comments'
 
   # Sessions events
   get '/login', to: 'session#new'

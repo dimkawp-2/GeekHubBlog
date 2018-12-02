@@ -5,4 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-User.create([{ name: 'admin',password: ENV['USER_PASSWORD_ADMIN'],role: 'admin' }])
+User.create([{name: 'admin', email: 'admin@gmail.com',password: ENV['USER_PASSWORD_ADMIN'],role: 'admin' }])
+Post.create([{title: 'Post Title 1', body: 'Just random body text', user_id: 1 },
+             {title: 'Post Title 2', body: 'Just random body text' user_id: 1}])
+puts 'Success: Seed installs'

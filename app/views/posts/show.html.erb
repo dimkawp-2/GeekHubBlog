@@ -1,0 +1,59 @@
+<div class="ui container">
+  <br>
+  <div>
+    <h3 style="text-align: center"><%= @post.title %></h3>
+    <div class="ui segment" style="min-height: 300px">
+      <p><%= @post.body %></p>
+    </div>
+    <div class="ui grid">
+      <div class="row">
+        <div class="three wide column">
+          <a class="ui tag label">blog</a>
+          <a class="ui red tag label"><%= @avtor.name %></a>
+        </div>
+        <div class="eight wide column"></div>
+        <div class="five wide column">
+          <%= @post.created_at %>
+          <div class="ui labeled button" tabindex="0">
+            <div class="ui basic blue button">
+              <i class="fork icon"></i> Forks
+            </div>
+            <a class="ui basic left pointing blue label">
+              1
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div>
+    <% @comments.each do |comment| %>
+        <div class="ui right aligned segment">
+          <h5><%= comment.user_name %></h5>
+          <p><%= comment.body %></p>
+        </div>
+
+    <% end %>
+  </div>
+  <div class="ui container">
+    <form action="/comments/<%= @post.id %>" method="post" class="ui form" style="display: flex; flex-direction: column">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <div class="three column row">
+        <% if !logged_in? %>
+        <div class="field">
+          <label>Name</label>
+          <input type="text" name="comment[user_name]" placeholder="Name">
+        </div>
+        <% end %>
+        <div class="field">
+          <label>Message</label>
+          <textarea type="text" name="comment[body]" placeholder="Text message" cols="50" rows="10"></textarea>
+        </div>
+      </div>
+      <br>
+      <button class="ui button blue" type="submit" style="display: flex; align-self: flex-end">Write Comment</button>
+    </form>
+    <br>
+  </div>
+</div>
