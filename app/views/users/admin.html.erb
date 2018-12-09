@@ -29,10 +29,8 @@
                 <% if user.role == 'admin' %>
 
                 <% else %>
-
                       <i class="ban icon"></i>
                       <%= link_to 'Destroy', user, :method => :delete, class: "ban icon", data: {:confirm => "Are you sure?"} %>
-
                 <% end %>
               </td>
             </tr>
