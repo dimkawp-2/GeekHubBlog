@@ -1,7 +1,7 @@
 <h4 class="ui horizontal header divider">
   <a href="#">Case All Posts</a>
 </h4>
-<% @posts.each do |post| %>
+<% @posts.sort.each do |post| %>
 <div class="">
   <div class="ui text container segment">
     <a class="ui blue ribbon label">Post</a>
@@ -11,7 +11,17 @@
     <p style="text-align: center">
       <%= post.body %>
     </p>
-    <a class="ui large button" href="/posts/<%= post.id %>">Read More</a>
+    <div style="display: flex;justify-content: space-between">
+      <a class="ui large button" href="/posts/<%= post.id %>">Read More</a>
+      <div class="ui labeled button" tabindex="0">
+        <div class="ui basic blue button">
+          <i class="eye icon"></i> Watch
+        </div>
+        <a class="ui basic left pointing blue label">
+          <%= post.show %>
+        </a>
+      </div>
+    </div>
   </div>
 </div>
     <br>

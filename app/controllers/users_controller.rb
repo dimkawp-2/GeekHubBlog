@@ -1,9 +1,13 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  skip_before_action :verify_authenticity_token, :only => :create
+  skip_before_action :verify_authenticity_token, only: :create
 
-  def index
-    @users = User.all
+  def admin
+    if !current_user || current_user.role != 'admin'
+      redirect_to '/', alert: 'You not admin status.'
+    else
+      @users = User.all
+    end
   end
 
   def show
@@ -15,26 +19,47 @@ class UsersController < ApplicationController
   end
 
   def profile
-    @user = User.find(session[:user_id])
-    @posts = Post.where(user_id: session[:user_id])
-  end
-  def create
-    @user = User.new(user_params) # params[:user]
-    if params[:user][:email] == 'dimkawp@gmail.com'
-      @user.role = 'admin'
+    if current_user
+      @user = User.find(session[:user_id])
+      @posts = Post.where(user_id: session[:user_id])
     else
-      @user.role = 'user'
+      redirect_to '/', notice: 'You need authentication.'
     end
 
+  end
+
+  def create
+    @user = User.new(user_params)
+    @user.role = 'user'
 
     respond_to do |format|
       if @user.save
         format.html { redirect_to '/', notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
+        format.json { render json: @user.name }
       else
         format.html { redirect_to '/', alert: 'User cannot created.' }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.json { render json: @user.errors }
       end
+    end
+  end
+
+  def update
+    respond_to do |format|
+      if @user.update(user_params)
+        format.html { redirect_to '/profile', notice: 'NAME was successfully updated.' }
+        format.json { render json: @user }
+      else
+        format.html { redirect_to '/profile', notice: 'NAME updated is failed.' }
+        format.json { render json: @user.errors }
+      end
+    end
+  end
+
+  def destroy
+    @user.destroy
+    respond_to do |format|
+      format.html { redirect_to '/admin', notice: 'User was successfully destroyed.' }
+      format.json { render json: 'destroy' }
     end
   end
 
