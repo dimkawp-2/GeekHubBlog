@@ -49,7 +49,7 @@
     </div>
   </div>
   <div class="pusher">
-    <div class="wrapper" style="height: 100vh; display: flex; flex-direction: column; justify-content: space-between;">
+    <div class="wrapper" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between;">
       <div id="modal_login" class="ui modal tiny">
         <i class="close icon"></i>
         <div class="content">
@@ -130,9 +130,7 @@
         </div>
       </div>
       <div class="ui inverted vertical masthead center aligned segment" style="min-height: 300px;">
-        <video autoplay muted loop id="myVideo">
-          <source src="assets/background.mp4" type="video/mp4">
-        </video>
+        <%= video_tag("background.mp4", id: "myVideo", autoplay: true, muted: true, loop: true) %>
         <div class="ui container">
 
           <div class="ui large secondary inverted pointing menu">
