@@ -9,22 +9,30 @@
       <div class="row">
         <div class="three wide column">
           <a class="ui tag label">blog</a>
-          <a class="ui red tag label"><%= @avtor.name %></a>
+          <a class="ui red tag label"><%= @post.user.name %></a>
         </div>
         <div class="eight wide column"></div>
         <div class="five wide column">
           <%= @post.created_at %>
           <div class="ui labeled button" tabindex="0">
             <div class="ui basic blue button">
-              <i class="fork icon"></i> Forks
+              <i class="eye icon"></i> Watch
             </div>
             <a class="ui basic left pointing blue label">
-              1
+              <%= @post.show %>
             </a>
           </div>
         </div>
       </div>
     </div>
+    <% if current_user %>
+      <% if current_user.role == 'admin' %>
+          <a href="<%= @post.id %>/edit">
+            <button class="ui button green"><i class="edit outline icon"></i>edit</button>
+          </a>
+          <%= link_to 'Destroy', @post, :method => :delete, class: "ui button red", data: {:confirm => "Are you sure?"} %>
+      <% end %>
+    <% end %>
   </div>
   <br>
   <div>
@@ -33,14 +41,13 @@
           <h5><%= comment.user_name %></h5>
           <p><%= comment.body %></p>
         </div>
-
     <% end %>
   </div>
   <div class="ui container">
     <form action="/comments/<%= @post.id %>" method="post" class="ui form" style="display: flex; flex-direction: column">
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
       <div class="three column row">
-        <% if !logged_in? %>
+        <% if !current_user %>
         <div class="field">
           <label>Name</label>
           <input type="text" name="comment[user_name]" placeholder="Name">

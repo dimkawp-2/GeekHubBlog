@@ -1,0 +1,44 @@
+<% if current_user.role == 'admin' %>
+    <br>
+    <div class="ui container">
+      <table class="ui very basic collapsing celled table">
+        <thead>
+        <tr><th>USERS</th>
+          <th>ROLE STATUS</th>
+        </tr></thead>
+        <tbody>
+        <% @users.each do |user| %>
+            <tr>
+              <td>
+                <h4 class="ui image header">
+                  <% if user.role == 'admin' %>
+                    <%=image_tag("admin_avatar.png", class: "ui mini rounded image", alt: "user")%>
+                  <% else %>
+                    <%=image_tag("user_avatar.png", class: "ui mini rounded image", alt: "user")%>
+                  <% end %>
+                  <div class="content">
+                    <%= user.name %>
+                    <div class="sub header"><%= user.email %>
+                    </div>
+                  </div>
+                </h4></td>
+              <td>
+                <%= user.role %>
+              </td>
+              <td>
+                <% if user.role == 'admin' %>
+
+                <% else %>
+
+                      <i class="ban icon"></i>
+                      <%= link_to 'Destroy', user, :method => :delete, class: "ban icon", data: {:confirm => "Are you sure?"} %>
+
+                <% end %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+    <br>
+<% end %>

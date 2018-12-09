@@ -1,0 +1,22 @@
+<% if current_user.role == 'admin' %>
+    <div class="ui container">
+      <form action="/posts/<%= @post.id %>" method="post" class="ui form">
+        <input type="hidden" name="_method" value="put" />
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+        <div class="three column row">
+          <div class="field">
+            <label>Title</label>
+            <input type="text" name="post[title]" placeholder="Title" value="<%= @post.title %>">
+          </div>
+          <div class="field">
+            <label>Body</label>
+            <textarea type="text" name="post[body]" placeholder="Body" cols="50" rows="10">
+              <%= @post.body %>
+            </textarea>
+          </div>
+        </div>
+        <br>
+        <button class="ui button blue" type="submit">Create</button>
+      </form>
+    </div>
+<% end %>

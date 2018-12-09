@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
   root 'index#index'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  get '/' => 'index#index'
 
   # Users
   resources :users
   get '/profile', to: 'users#profile'
+  get '/admin', to: 'users#admin'
+  # post '/edit/:id', to: 'users#update'
   
   # Posts
   resources :posts
@@ -15,8 +16,7 @@ Rails.application.routes.draw do
   post '/comments/:post_id', to: 'posts#create_comments'
 
   # Sessions events
-  get '/login', to: 'session#new'
-  get '/logout', to: 'session#destroy'
+  get '/logout', to: 'session#log_out'
   post '/login', to: 'session#create'
 
 end
