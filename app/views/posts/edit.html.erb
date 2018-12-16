@@ -1,4 +1,4 @@
-<% if current_user.role == 'admin' %>
+<% if current_user.role == 'admin' || current_user.id == @post.user_id %>
     <div class="ui container">
       <form action="/posts/<%= @post.id %>" method="post" class="ui form">
         <input type="hidden" name="_method" value="put" />
@@ -16,7 +16,79 @@
           </div>
         </div>
         <br>
-        <button class="ui button blue" type="submit">Create</button>
+        <button class="ui button blue" type="submit">Edit</button>
       </form>
+      <br>
+      <button class="ui basic button tag_editor">
+        <i class="icon tags"></i>
+        Tag editor
+      </button>
+      <button class="ui basic button add_video">
+        <i class="youtube icon"></i>
+        Add Video
+      </button>
+      <br>
+      <br>
+    </div>
+    <div id="modal_tag_editor" class="ui modal tiny">
+      <i class="close icon"></i>
+      <div class="content">
+        <div class="description">
+          <div class="column">
+            <h2 class="ui teal image header">
+              <div class="content" style="color: #ff513e; text-transform: uppercase;">
+                Edit or Created Tags
+              </div>
+            </h2>
+            <form action="/posts/<%= @post.id %>/tag_new" method="post" class="ui large form" style="display: flex">
+              <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+                <input type="text" name="post[tag][new]">
+
+              <button class="ui button green" type="submit" style="display: flex"><i class="icon tags"></i> Created</button>
+            </form>
+            <div class="ui message">
+              <form action="/posts/<%= @post.id %>/edit_tags" method="post" class="ui form">
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+                <% @post.tags.each_with_index do |tag,index| %>
+                    <input type="text" name="tags[]" value="<%= tag %>">
+                <% end %>
+                <br>
+                <button class="ui button blue" type="submit"><i class="icon tags"></i> Edit</button>
+                <br>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="modal_add_video2" class="ui modal tiny">
+      <i class="close icon"></i>
+      <div class="content">
+        <div class="description">
+          <div class="column">
+
+            <div class="content" style="color: #ff513e; text-transform: uppercase;">
+              <form action="/posts/<%= @post.id %>/youtube_created" method="post" class="ui large form" style="display: flex;flex-direction: column;justify-content: center">
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+                <iframe height="300" src="https://www.youtube.com/embed/<%= @post.video %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  <input class="ui input" type="text" name="post[youtube_url]" value="www.youtube.com/embed/<%= @post.video %>">
+                <button class="ui button blue" type="submit" style="display: flex;align-self: flex-end"><i class="icon youtube"></i> Add</button>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
     </div>
 <% end %>
+
+<script>
+    $('.tag_editor').click(function(){
+        console.log('modal');
+        $('#modal_tag_editor').modal('show');
+    });
+    $('.add_video').click(function(){
+        console.log('modal');
+        $('#modal_add_video2').modal('show');
+    });
+</script>

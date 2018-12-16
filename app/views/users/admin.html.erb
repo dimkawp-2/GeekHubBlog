@@ -21,9 +21,29 @@
                     <div class="sub header"><%= user.email %>
                     </div>
                   </div>
-                </h4></td>
+                </h4>
+              </td>
               <td>
-                <%= user.role %>
+                <% if user.role == 'admin' %>
+                    <label>Change Role</label>
+                    <select class="ui fluid dropdown" name="user[role]">
+                      <option value="admin" selected>Admin</option>
+                      <option value="user"  disabled>User</option>
+                      <option value="baned" disabled>Baned</option>
+                    </select>
+                    <% else %>
+                    <form class="ui form" action="/users/<%= user.id %>" method="post">
+                      <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+                      <input type="hidden" name="_method" value="put" />
+                      <label>Change Role</label>
+                      <select class="ui fluid dropdown" name="user[role]">
+                        <option value="admin" <% if user.role == 'admin' %> selected <%end%>>Admin</option>
+                        <option value="user" <% if user.role == 'user' %> selected <%end%>>User</option>
+                        <option value="baned" <% if user.role == 'baned' %> selected <%end%>>Baned</option>
+                      </select>
+                      <button class="ui inverted primary button" type="submit">Change</button>
+                    </form>
+                  <% end %>
               </td>
               <td>
                 <% if user.role == 'admin' %>

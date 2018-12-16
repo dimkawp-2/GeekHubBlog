@@ -1,4 +1,18 @@
 <div class="ui container">
+  <div id="modal_show_video" class="ui modal large">
+    <i class="close icon"></i>
+    <div class="content">
+      <div class="description">
+        <div class="column">
+
+          <div class="content" style="color: #ff513e; text-transform: uppercase;">
+              <iframe height="640" width="100%" src="https://www.youtube.com/embed/<%= @post.video %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
   <br>
   <div>
     <h3 style="text-align: center"><%= @post.title %></h3>
@@ -6,15 +20,22 @@
       <p><%= @post.body %></p>
     </div>
     <div class="ui grid">
-      <div class="row">
-        <div class="three wide column">
-          <a class="ui tag label">blog</a>
+      <div class="row" style="display: flex;justify-content: space-between">
+        <div class="six wide column">
+          <% @post.tags.each do |tag| %>
+            <a class="ui tag label"><%= tag %></a>
+          <% end %>
           <a class="ui red tag label"><%= @post.user.name %></a>
         </div>
-        <div class="eight wide column"></div>
-        <div class="five wide column">
+        <div class="ten wide column" style="display: flex;align-items: center;justify-content: flex-end">
           <%= @post.created_at %>
           <div class="ui labeled button" tabindex="0">
+            <% if @post.video %>
+              <button class="ui basic button show_video">
+                <i class="youtube icon"></i>
+                Show Video
+              </button>
+            <% end %>
             <div class="ui basic blue button">
               <i class="eye icon"></i> Watch
             </div>
@@ -64,3 +85,10 @@
     <br>
   </div>
 </div>
+
+<script>
+    $('.show_video').click(function(){
+        console.log('modal');
+        $('#modal_show_video').modal('show');
+    });
+</script>

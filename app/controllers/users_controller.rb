@@ -44,13 +44,21 @@ class UsersController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to '/profile', notice: 'NAME was successfully updated.' }
+    if params[:user][:role]
+      @user.update(role: params[:user][:role])
+      respond_to do |format|
+        format.html { redirect_to '/admin', notice: 'ROLE was successfully updated.' }
         format.json { render json: @user }
-      else
-        format.html { redirect_to '/profile', notice: 'NAME updated is failed.' }
-        format.json { render json: @user.errors }
+      end
+    else
+      respond_to do |format|
+        if @user.update(user_params)
+          format.html { redirect_to '/profile', notice: 'NAME was successfully updated.' }
+          format.json { render json: @user }
+        else
+          format.html { redirect_to '/profile', notice: 'NAME updated is failed.' }
+          format.json { render json: @user.errors }
+        end
       end
     end
   end
