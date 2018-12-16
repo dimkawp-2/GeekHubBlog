@@ -3,19 +3,32 @@ class PostsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create, :update, :create_comments]
 
   def index
-    user_id = session[:user_id]
-    @self_posts = Post.where(user_id: user_id)
+      user_id = session[:user_id]
+      @self_posts = Post.where(user_id: user_id)
   end
 
   def show
-    set_post
-    @post.update(show: @post.show.to_i + 1)
+    if @post.status == 'public'
+      set_post
+      @post.update(show: @post.show.to_i + 1)
+    else
+      if current_user.id == @post.user_id
+        set_post
+      else
+        respond_to do |format|
+          format.html { redirect_to '/', alert: 'Post not a public.' }
+        end
+      end
+    end
   end
 
   def create
     @post = Post.new(post_params)
     @post.user_id = session[:user_id]
     @post.show = '1'
+    @post.status = 'private'
+    user = User.find(session[:user_id])
+    @post.tags = ["#{user.name}"]
 
     respond_to do |format|
       if @post.save
@@ -52,6 +65,55 @@ class PostsController < ApplicationController
     end
   end
 
+  def create_new_tag
+    if params[:post][:tag][:new]
+      @post = Post.find(params[:id])
+      tags = @post.tags.push(params[:post][:tag][:new])
+      respond_to do |format|
+        if @post.update(tags: tags)
+          format.html { redirect_to @post, notice: 'Post tag was successfully created.' }
+          format.json { render json: @post }
+        else
+          format.html { redirect_to @post, notice: 'Post tag created is failed.' }
+          format.json { render json: @post.errors }
+        end
+      end
+    end
+  end
+
+  def edit_tags
+    if params[:tags]
+      new_array = params[:tags].reject(&:empty?)
+      @post = Post.find(params[:id])
+      respond_to do |format|
+        if @post.update(tags: new_array)
+          format.html { redirect_to @post, notice: 'Post tags was successfully updated.' }
+          format.json { render json: @post }
+        else
+          format.html { redirect_to @post, notice: 'Post tags updated is failed.' }
+          format.json { render json: @post.errors }
+        end
+      end
+    end
+  end
+
+  def youtube_created
+    if params[:post][:youtube_url]
+      link_id = get_v(params[:post][:youtube_url])
+
+      @post = Post.find(params[:id])
+      respond_to do |format|
+        if @post.update(video: link_id)
+          format.html { redirect_to @post, notice: 'Post youtube_url was successfully updated.' }
+          format.json { render json: @post }
+        else
+          format.html { redirect_to @post, notice: 'Post youtube_url updated is failed.' }
+          format.json { render json: @post.errors }
+        end
+      end
+    end
+  end
+
   def update
     respond_to do |format|
       if @post.update(post_params)
@@ -74,12 +136,19 @@ class PostsController < ApplicationController
 
   private
 
+  def get_v(url)
+    components = URI.parse(url)
+
+    params = CGI.parse(components.query)
+    params['v'].first
+  end
+
   def set_post
     @post = Post.find(params[:id])
     @comments = Comment.where(post_id: @post.id)
   end
 
   def post_params
-    params.require(:post).permit(:title, :body, :user_id)
+    params.require(:post).permit(:title, :body, :user_id, :status)
   end
 end

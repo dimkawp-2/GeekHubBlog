@@ -11,17 +11,32 @@
     <tr><th>Title</th>
       <th>Description</th>
       <th>Navigation</th>
+      <th>Status</th>
     </tr></thead>
     <tbody>
     <% @self_posts.each do |post| %>
     <tr>
       <td><%= post.title %></td>
-      <td><%= post.body %></td>
-      <td>
+      <td><p style="font-size: 8px;max-height: 50px; text-overflow: ellipsis"><%= post.body %></p></td>
+      <td style="font-size: 5px">
         <a href="posts/<%= post.id %>">
           <button class="ui button green">show</button>
         </a>
-        <%= link_to 'Destroy', post, :method => :delete, class: "ui button red", :confirm => "Are you sure?" %>
+        <a href="posts/<%= post.id %>/edit">
+          <button class="ui button blue"><i class="edit outline icon"></i>edit</button>
+        </a>
+        <%= link_to 'Destroy', post, :method => :delete, class: "ui button red", data: {:confirm => "Are you sure?"} %>
+      </td>
+      <td>
+        <form action="/posts/<%= post.id %>" method="post" class="ui form segment center" style="display: flex">
+          <input type="hidden" name="_method" value="put" />
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+          <select class="ui dropdown" name="post[status]">
+            <option value="private" <% if post.status == 'private' %> selected <%end%>>private</option>
+            <option value="public" <% if post.status == 'public' %> selected <%end%>>public</option>
+          </select>
+          <button class="ui button blue" type="submit">Change</button>
+        </form>
       </td>
     </tr>
     <% end %>
