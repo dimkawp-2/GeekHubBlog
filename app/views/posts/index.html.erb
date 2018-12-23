@@ -1,10 +1,17 @@
 <div class="ui container" style="min-height: 300px">
   <br>
-  <a href="posts/new">
-    <button class="massive ui button blue">
-      Greate Post
-    </button>
-  </a>
+  <div class="container" style="display: flex">
+    <a href="posts/new">
+      <button class="massive ui button blue" style="height: 75px">
+        Greate Post
+      </button>
+    </a>
+    <%= form_tag(posts_path, :method => "get", id: "search-form", class: "ui form") do %>
+        <%= text_field_tag :search, params[:search], placeholder: "Search Posts" %>
+        <%= submit_tag "Search", class: "ui button primary" %>
+    <% end %>
+  </div>
+
 
   <table class="ui fixed table" >
     <thead>

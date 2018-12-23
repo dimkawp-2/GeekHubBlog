@@ -38,14 +38,22 @@
             <label>New Name</label>
             <input type="text" name="user[name]" placeholder="New Name">
           </div>
-          <div class="field">
-            <div class="ui checkbox">
-              <input type="checkbox" tabindex="0" class="hidden">
-              <label>I agree to the change name</label>
-            </div>
-          </div>
           <button class="ui button" type="submit">Submit</button>
         </div>
+      </form>
+
+      <form class="ui form" action="/users/<%= @user.id %>" method="post">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+        <input type="hidden" name="_method" value="put" />
+        <div class="field">
+          <label>Old Password</label>
+          <input type="password" name="user[password_old]" placeholder='old password'>
+        </div>
+          <div class="field">
+            <label>New Password</label>
+            <input type="password" name="user[password_new]" placeholder="New Name">
+          </div>
+          <button class="ui button" type="submit">Change Password</button>
       </form>
 
     </div>

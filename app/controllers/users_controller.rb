@@ -60,6 +60,14 @@ class UsersController < ApplicationController
           format.json { render json: @user.errors }
         end
       end
+      if params[:user][:password_old] === current_user.password
+        if @user.update(password: params[:user][:password_new])
+          session.clear
+        else
+          format.html { redirect_to '/profile', notice: 'PASSWORD updated is failed.' }
+          format.json { render json: @user.errors }
+        end
+      end
     end
   end
 

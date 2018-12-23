@@ -28,4 +28,12 @@
     <br>
   <% end %>
 <% end %>
+<div class="digg_pagination">
+  <div class="page_numbers">
+    <%= will_paginate @posts, :container => false %>
+  </div>
+  <div class="page_info">
+    <%= page_entries_info @posts %>
+  </div>
+</div>
 

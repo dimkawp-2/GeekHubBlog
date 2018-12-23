@@ -2,7 +2,7 @@
     <div class="ui container">
       <form action="/posts/<%= @post.id %>" method="post" class="ui form">
         <input type="hidden" name="_method" value="put" />
-        <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+        <%= hidden_field_tag :edit_post_token, form_authenticity_token -%>
         <div class="three column row">
           <div class="field">
             <label>Title</label>
@@ -41,14 +41,14 @@
               </div>
             </h2>
             <form action="/posts/<%= @post.id %>/tag_new" method="post" class="ui large form" style="display: flex">
-              <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+              <%= hidden_field_tag :new_tag_token, form_authenticity_token -%>
                 <input type="text" name="post[tag][new]">
 
               <button class="ui button green" type="submit" style="display: flex"><i class="icon tags"></i> Created</button>
             </form>
             <div class="ui message">
               <form action="/posts/<%= @post.id %>/edit_tags" method="post" class="ui form">
-                <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+                <%= hidden_field_tag :edit_tag_token, form_authenticity_token -%>
                 <% @post.tags.each_with_index do |tag,index| %>
                     <input type="text" name="tags[]" value="<%= tag %>">
                 <% end %>
@@ -69,7 +69,7 @@
 
             <div class="content" style="color: #ff513e; text-transform: uppercase;">
               <form action="/posts/<%= @post.id %>/youtube_created" method="post" class="ui large form" style="display: flex;flex-direction: column;justify-content: center">
-                <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+                <%= hidden_field_tag :youtube_created_token, form_authenticity_token -%>
                 <iframe height="300" src="https://www.youtube.com/embed/<%= @post.video %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                   <input class="ui input" type="text" name="post[youtube_url]" value="www.youtube.com/embed/<%= @post.video %>">
                 <button class="ui button blue" type="submit" style="display: flex;align-self: flex-end"><i class="icon youtube"></i> Add</button>

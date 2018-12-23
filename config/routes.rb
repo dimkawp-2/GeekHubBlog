@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   resources :users
   get '/profile', to: 'users#profile'
   get '/admin', to: 'users#admin'
-  # post '/edit/:id', to: 'users#update'
   
   # Posts
   resources :posts
@@ -19,6 +18,7 @@ Rails.application.routes.draw do
   # Message
   # resources :comments
   post '/comments/:post_id', to: 'posts#create_comments'
+  post '/comments/:post_id/:parent_id', to: 'posts#create_comments_reply'
 
   # Sessions events
   get '/logout', to: 'session#log_out'
