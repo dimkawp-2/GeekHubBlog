@@ -23,7 +23,7 @@
       <div class="row" style="display: flex;justify-content: space-between">
         <div class="six wide column">
           <% @post.tags.each do |tag| %>
-            <a class="ui tag label"><%= tag %></a>
+              <%= link_to tag, "#{@post.id}/#{tag}", class: "ui tag label", method: :post %>
           <% end %>
           <a class="ui red tag label"><%= @post.user.name %></a>
         </div>
@@ -59,8 +59,36 @@
   <div>
     <% @comments.each do |comment| %>
         <div class="ui right aligned segment">
+          <% if comment.ancestry %>
+              <% ancestry_comment comment.ancestry %>
+
+              <div class="ui segment" style="font-size: 10px;border: 1px solid #ff8666; background-image: linear-gradient(to right, #ff9d50 , #ff7820);">
+                <span><%= @ancestry.user_name %></span>
+                <p><%= @ancestry.body %></p>
+              </div>
+
+              <% else %>
+              <p></p>
+          <% end %>
           <h5><%= comment.user_name %></h5>
           <p><%= comment.body %></p>
+          <form action="/comments/<%= @post.id %>/<%= comment.id %>" method="post" class="ui form" style="display: flex; flex-direction: column">
+
+            <div class="three column row">
+              <% if !current_user %>
+                  <div class="field">
+                    <label>Name</label>
+                    <input type="text" name="comment[user_name]" placeholder="Name">
+                  </div>
+              <% end %>
+              <div class="field">
+                <label>Message</label>
+                <textarea type="text" name="comment[body]" placeholder="Text message" cols="50" rows="3"></textarea>
+              </div>
+            </div>
+            <br>
+            <button class="ui button blue" type="submit" style="display: flex; align-self: flex-end">Write Quote</button>
+          </form>
         </div>
     <% end %>
   </div>
@@ -83,6 +111,14 @@
       <button class="ui button blue" type="submit" style="display: flex; align-self: flex-end">Write Comment</button>
     </form>
     <br>
+  </div>
+  <div class="digg_pagination">
+    <div class="page_numbers">
+      <%= will_paginate @comments, :container => false %>
+    </div>
+    <div class="page_info">
+      <%= page_entries_info @comments %>
+    </div>
   </div>
 </div>
 
