@@ -12,7 +12,6 @@ Rails.application.routes.draw do
   post '/posts/:id/youtube_created', to: 'posts#youtube_created'
 
   # Tags
-  post '/posts/:id/:tag', to: 'posts#filter_tag'
   post '/posts/:id/tag_new', to: 'posts#create_new_tag'
   post '/posts/:id/edit_tags', to: 'posts#edit_tags'
 

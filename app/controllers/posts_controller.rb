@@ -1,6 +1,11 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
-  skip_before_action :verify_authenticity_token, only: [:create, :update, :create_comments, :create_comments_reply]
+  skip_before_action :verify_authenticity_token, only: [:create,
+                                                        :update,
+                                                        :create_comments,
+                                                        :create_comments_reply,
+                                                        :create_new_tag,
+                                                        :edit_tags]
 
   def index
       user_id = session[:user_id]
@@ -129,10 +134,6 @@ class PostsController < ApplicationController
         end
       end
     end
-  end
-
-  def filter_tag
-    params[:tag]
   end
 
   def youtube_created
